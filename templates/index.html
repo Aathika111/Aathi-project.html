@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Gesture Volume Control</title>
+</head>
+<body style="text-align:center; font-family: Arial;">
+
+    <h2>Gesture Controlled Volume</h2>
+
+    <a href="/logout">Logout</a>
+
+    <br><br>
+
+    <!-- Video Feed -->
+    <img src="{{ url_for('video_feed') }}" width="400">
+
+    <h3>Live Metrics</h3>
+
+    <p>Volume: <span id="volume">0</span>%</p>
+    <p>Gesture: <span id="gesture">None</span></p>
+    <p>FPS: <span id="fps">0</span></p>
+    <p>Distance: <span id="distance">0</span></p>
+    <p>Status: <span id="locked">Unlocked</span></p>
+
+    <script>
+        function updateMetrics() {
+            fetch('/metrics')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById("volume").innerText = data.volume;
+                    document.getElementById("gesture").innerText = data.gesture;
+                    document.getElementById("fps").innerText = data.fps;
+                    document.getElementById("distance").innerText = data.distance;
+                    document.getElementById("locked").innerText = data.locked ? "Locked" : "Unlocked";
+                });
+        }
+
+        setInterval(updateMetrics, 1000);
+    </script>
+
+</body>
+</html>
